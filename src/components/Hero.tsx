@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
 
 const trustPoints = [
-  "Always answers",
-  "Less pressure on staff",
-  "Capture more leads",
-  "Secure & privacy-aware",
-];
+"Always answers",
+"Less pressure on staff",
+"Capture more leads",
+"Secure & privacy-aware"];
+
 
 const Hero = () => {
   return (
@@ -40,21 +40,21 @@ const Hero = () => {
             <a href="#cta">Schedule a Demo</a>
           </Button>
           <Button size="lg" variant="outline" className="rounded-full px-8 text-base h-12 border-border hover:bg-secondary" asChild>
-            <a href="#features">See It in Action</a>
+            <a href="#features">​See How It Works   </a>
           </Button>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 animate-fade-up" style={{ animationDelay: "0.4s" }}>
-          {trustPoints.map((point) => (
-            <div key={point} className="flex items-center gap-2 text-sm text-muted-foreground">
+          {trustPoints.map((point) =>
+          <div key={point} className="flex items-center gap-2 text-sm text-muted-foreground">
               <CheckCircle className="w-4 h-4 text-primary" />
               <span>{point}</span>
             </div>
-          ))}
+          )}
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default Hero;

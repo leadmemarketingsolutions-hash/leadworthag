@@ -15,7 +15,7 @@ const faqs = [
     a: "Not at all. LeadWorthy's agents are trained on natural conversational language specific to your industry and sounds professional and friendly.",
   },
   {
-     q: "Can LeadWorthy Marketing book jobs directly into my calendar?",
+     q: "Can LeadWorthy book jobs directly into my calendar?",
      a: "Yes. LeadWorthy integrates with most popular calendar and booking tools, including Google Calendar, Jobber, ServiceTitan, and more.",
   },
   {

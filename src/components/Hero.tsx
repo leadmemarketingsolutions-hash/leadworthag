@@ -28,7 +28,7 @@ const Hero = () => {
         </h1>
 
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-4 animate-fade-up" style={{ animationDelay: "0.2s" }}>
-          LeadWorthy Marketing's AI Receptionist answers your calls, texts, and website chats 24/7 — so you never miss a paying customer.
+          LeadWorthy's AI Receptionist answers your calls, texts, and website chats 24/7 — so you never miss a paying customer.
         </p>
 
         <p className="text-base text-muted-foreground max-w-xl mx-auto mb-8 animate-fade-up" style={{ animationDelay: "0.25s" }}>

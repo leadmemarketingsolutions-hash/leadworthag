@@ -17,7 +17,7 @@ const Results = () => {
       <div className="container mx-auto px-6 max-w-3xl">
         <div className="text-center mb-14">
           <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
-            What Changes After LeadWorth
+            What Changes After LeadWorthy Marketing
           </h2>
         </div>
 

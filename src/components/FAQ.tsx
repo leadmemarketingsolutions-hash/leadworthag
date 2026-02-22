@@ -12,19 +12,19 @@ const faqs = [
   },
   {
     q: "Will the AI sound robotic to my customers?",
-    a: "Not at all. LeadWorth is trained on natural conversational language specific to your industry and sounds professional and friendly.",
+    a: "Not at all. LeadWorthy Marketing is trained on natural conversational language specific to your industry and sounds professional and friendly.",
   },
   {
-    q: "Can LeadWorth book jobs directly into my calendar?",
-    a: "Yes. LeadWorth integrates with most popular calendar and booking tools, including Google Calendar, Jobber, ServiceTitan, and more.",
+     q: "Can LeadWorthy Marketing book jobs directly into my calendar?",
+     a: "Yes. LeadWorthy Marketing integrates with most popular calendar and booking tools, including Google Calendar, Jobber, ServiceTitan, and more.",
   },
   {
-    q: "What happens with emergency calls?",
-    a: "LeadWorth is trained to identify urgent situations and can immediately route those calls to a designated team member or on-call number.",
+     q: "What happens with emergency calls?",
+     a: "LeadWorthy Marketing is trained to identify urgent situations and can immediately route those calls to a designated team member or on-call number.",
   },
   {
     q: "Do I need to change my phone number?",
-    a: "No. LeadWorth works with your existing business number. We simply forward calls or integrate directly with your phone system.",
+    a: "No. LeadWorthy Marketing works with your existing business number. We simply forward calls or integrate directly with your phone system.",
   },
   {
     q: "Is my customer data secure?",

@@ -12,7 +12,7 @@ const faqs = [
   },
   {
     q: "Will the AI sound robotic to my customers?",
-    a: "Not at all. LeadWorthy Marketing is trained on natural conversational language specific to your industry and sounds professional and friendly.",
+    a: "Not at all. LeadWorthy's agents are trained on natural conversational language specific to your industry and sounds professional and friendly.",
   },
   {
      q: "Can LeadWorthy Marketing book jobs directly into my calendar?",

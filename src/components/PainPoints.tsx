@@ -1,13 +1,13 @@
 import { PhoneOff, Clock, Users, DollarSign, MessageCircle, Shuffle } from "lucide-react";
 
 const painPoints = [
-  { icon: PhoneOff, text: "Lost bookings from unanswered calls" },
-  { icon: Clock, text: "Long hold times frustrate customers" },
-  { icon: Users, text: "Staff burnout from constant phones" },
-  { icon: DollarSign, text: "Wasted ad spend on missed leads" },
-  { icon: MessageCircle, text: "Hours spent on repetitive questions" },
-  { icon: Shuffle, text: "Inconsistent customer experience" },
-];
+{ icon: PhoneOff, text: "Lost bookings from unanswered calls" },
+{ icon: Clock, text: "Long hold times frustrate customers" },
+{ icon: Users, text: "Staff burnout from constant phones" },
+{ icon: DollarSign, text: "Wasted ad spend on missed leads" },
+{ icon: MessageCircle, text: "Hours spent on repetitive questions" },
+{ icon: Shuffle, text: "Inconsistent customer experience" }];
+
 
 const PainPoints = () => {
   return (
@@ -21,25 +21,25 @@ const PainPoints = () => {
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
-          {painPoints.map((p, i) => (
-            <div
-              key={i}
-              className="rounded-xl border border-border bg-background p-6 flex items-start gap-4"
-            >
+          {painPoints.map((p, i) =>
+          <div
+            key={i}
+            className="rounded-xl border border-border bg-background p-6 flex items-start gap-4">
+
               <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-destructive/10 flex items-center justify-center">
                 <p.icon className="w-5 h-5 text-destructive" />
               </div>
               <p className="text-sm font-medium text-foreground leading-relaxed">{p.text}</p>
             </div>
-          ))}
+          )}
         </div>
 
-        <p className="text-center text-muted-foreground max-w-xl mx-auto">
-          Hiring more staff is expensive. LeadWorthy Marketing automates the front desk so your team can focus on real work.
+        <p className="text-center text-muted-foreground max-w-xl mx-auto">Hiring more staff is expensive. LeadWorthy automates the front desk so your team can focus on real work.
+
         </p>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default PainPoints;

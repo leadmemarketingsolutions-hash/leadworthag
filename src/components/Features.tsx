@@ -19,8 +19,8 @@ const Features = () => {
           <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
             Your Always-On AI Front Desk
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            LeadWorth works across phone, SMS, WhatsApp, and web chat — built for real-world trade businesses.
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">LeadWorthy works across phone, SMS, WhatsApp, and web chat — built for real-world trade businesses.
+
           </p>
         </div>
 

@@ -4,7 +4,7 @@ import { Search, Brain, Zap, TrendingUp } from "lucide-react";
 const steps = [
   { icon: Search, num: "1", title: "Discover", desc: "We map your services, service areas, call flow, and booking rules." },
   { icon: Brain, num: "2", title: "Train", desc: "Your AI learns real customer scenarios, pricing ranges, and escalation paths." },
-  { icon: Zap, num: "3", title: "Go Live", desc: "LeadMe works across phone, SMS, WhatsApp, and chat — synced with your calendar." },
+  { icon: Zap, num: "3", title: "Go Live", desc: "LeadWorth works across phone, SMS, WhatsApp, and chat — synced with your calendar." },
   { icon: TrendingUp, num: "4", title: "Improve", desc: "We monitor conversations and continuously boost booking rates." },
 ];
 
@@ -33,7 +33,7 @@ const Process = () => {
 
         <div className="text-center mt-12">
           <Button size="lg" className="btn-primary-gradient rounded-full px-8 h-12" asChild>
-            <a href="#cta">Get Started with LeadMe</a>
+            <a href="#cta">Get Started with LeadWorth</a>
           </Button>
         </div>
       </div>

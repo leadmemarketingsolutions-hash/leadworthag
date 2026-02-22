@@ -20,7 +20,7 @@ const Features = () => {
             Your Always-On AI Front Desk
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            LeadMe works across phone, SMS, WhatsApp, and web chat — built for real-world trade businesses.
+            LeadWorth works across phone, SMS, WhatsApp, and web chat — built for real-world trade businesses.
           </p>
         </div>
 
@@ -40,7 +40,7 @@ const Features = () => {
 
         <div className="text-center mt-12">
           <Button size="lg" className="btn-primary-gradient rounded-full px-8 h-12" asChild>
-            <a href="#cta">Launch Your LeadMe Assistant</a>
+            <a href="#cta">Launch Your LeadWorth Assistant</a>
           </Button>
           <p className="text-sm text-muted-foreground mt-3">Ready in under a week.</p>
         </div>

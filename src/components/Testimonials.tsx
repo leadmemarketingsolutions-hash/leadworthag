@@ -3,17 +3,17 @@ import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 
 const testimonials = [
   {
-    quote: "LeadMe picks up every call we miss. We've booked 30% more jobs since going live.",
+    quote: "LeadWorth picks up every call we miss. We've booked 30% more jobs since going live.",
     name: "Mike Reynolds",
     role: "Owner, Reynolds HVAC",
   },
   {
-    quote: "Our office staff used to dread Monday mornings. Now LeadMe handles the rush before we even open.",
+    quote: "Our office staff used to dread Monday mornings. Now LeadWorth handles the rush before we even open.",
     name: "Sarah Chen",
     role: "Operations Manager, BrightClean Services",
   },
   {
-    quote: "We were losing leads on weekends. LeadMe captures every one and books them straight into our calendar.",
+    quote: "We were losing leads on weekends. LeadWorth captures every one and books them straight into our calendar.",
     name: "James Okoro",
     role: "Founder, Apex Roofing Co.",
   },

@@ -35,7 +35,7 @@ const PainPoints = () => {
         </div>
 
         <p className="text-center text-muted-foreground max-w-xl mx-auto">
-          Hiring more staff is expensive. LeadMe automates the front desk so your team can focus on real work.
+          Hiring more staff is expensive. LeadWorth automates the front desk so your team can focus on real work.
         </p>
       </div>
     </section>

@@ -16,15 +16,15 @@ const faqs = [
   },
   {
      q: "Can LeadWorthy Marketing book jobs directly into my calendar?",
-     a: "Yes. LeadWorthy Marketing integrates with most popular calendar and booking tools, including Google Calendar, Jobber, ServiceTitan, and more.",
+     a: "Yes. LeadWorthy integrates with most popular calendar and booking tools, including Google Calendar, Jobber, ServiceTitan, and more.",
   },
   {
      q: "What happens with emergency calls?",
-     a: "LeadWorthy Marketing is trained to identify urgent situations and can immediately route those calls to a designated team member or on-call number.",
+     a: "LeadWorthy's agents are trained to identify urgent situations and can immediately route those calls to a designated team member or on-call number.",
   },
   {
     q: "Do I need to change my phone number?",
-    a: "No. LeadWorthy Marketing works with your existing business number. We simply forward calls or integrate directly with your phone system.",
+    a: "No. LeadWorthy works with your existing business number. We simply forward calls or integrate directly with your phone system.",
   },
   {
     q: "Is my customer data secure?",

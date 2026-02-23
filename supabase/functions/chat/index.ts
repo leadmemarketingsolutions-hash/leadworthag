@@ -5,54 +5,32 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, content-type",
 };
 
-const sessions = new Map();
+let state: any = {};
 
 serve(async (req) => {
   if (req.method === "OPTIONS")
     return new Response(null, { headers: corsHeaders });
 
   try {
-    const { messages, sessionId } = await req.json();
+    const { messages } = await req.json();
     const last = messages[messages.length - 1]?.content?.trim();
 
-    let state = sessions.get(sessionId);
-
-    /* =============================
-       STEP 1 — Detect booking intent
-    ============================= */
-    if (!state && /book|schedule|demo|appointment/i.test(last)) {
-      state = { step: "name" };
-      sessions.set(sessionId, state);
-      return reply("Great! Let’s book your demo. What’s your full name?");
+    /* ---------- START BOOKING ---------- */
+    if (/book|schedule|appointment/i.test(last)) {
+      state = {};
+      return json("Great! What’s your full name?");
     }
 
-    /* =============================
-       STEP 2 — Name
-    ============================= */
-    if (state?.step === "name") {
+    /* ---------- NAME ---------- */
+    if (!state.name) {
       state.name = last;
-      state.step = "email";
-      sessions.set(sessionId, state);
-      return reply("Thanks! What’s your email?");
+      return json("Thanks! What’s your email?");
     }
 
-    /* =============================
-       STEP 3 — Email
-    ============================= */
-    if (state?.step === "email") {
+    /* ---------- EMAIL ---------- */
+    if (!state.email) {
       state.email = last;
-      state.step = "confirm";
-      sessions.set(sessionId, state);
 
-      return reply(
-        `Perfect. Generating your booking link...`
-      );
-    }
-
-    /* =============================
-       STEP 4 — Create booking link
-    ============================= */
-    if (state?.step === "confirm") {
       const result = await fetch("https://www.leadworthy.ca/api/book", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -62,33 +40,49 @@ serve(async (req) => {
         }),
       }).then(r => r.json());
 
-      sessions.delete(sessionId);
+      state = {};
 
-      if (!result?.booking_url) {
-        return reply(
-          "Sorry, something went wrong creating your booking. Please try again."
-        );
-      }
+      if (!result.booking_url)
+        return json("Something went wrong creating your booking link.");
 
-      return reply(
-        `You're almost booked! Click here to confirm your demo:\n${result.booking_url}`
+      return json(
+        `Perfect! Book your demo here:\n${result.booking_url}`
       );
     }
 
-    /* =============================
-       NORMAL AI CHAT
-    ============================= */
-    return reply("Hi! Ask anything or type 'Book a demo'.");
+    /* ---------- NORMAL CHAT ---------- */
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
-  } catch (err) {
-    console.error(err);
-    return reply("Something went wrong. Please try again.");
+    const ai = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-3-flash-preview",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are LeadWorthy AI receptionist. Keep replies short. If user wants booking, ask for name then email.",
+          },
+          ...messages,
+        ],
+      }),
+    }).then(r => r.json());
+
+    return json(ai.choices?.[0]?.message?.content || "How can I help?");
+  } catch {
+    return json("Something went wrong.");
   }
 });
 
-function reply(text) {
+function json(msg: string) {
   return new Response(
-    JSON.stringify({ choices: [{ message: { content: text } }] }),
+    JSON.stringify({
+      choices: [{ message: { content: msg } }],
+    }),
     { headers: corsHeaders }
   );
 }

@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     const end = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
 
     const url =
-      `https://api.calendly.com/event_type_available_times` +
+      "https://api.calendly.com/event_type_available_times" +
       `?event_type=${EVENT_TYPE}` +
       `&user=${USER}` +
       `&start_time=${start}` +

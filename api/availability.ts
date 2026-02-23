@@ -1,20 +1,38 @@
 export default async function handler(req, res) {
-  const API_KEY = process.env.eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzcxODMwNTYzLCJqdGkiOiIwY2I5ZGZlZC1mM2Q4LTRjYzgtODZlZC0yODlkOTI0NzNmZjkiLCJ1c2VyX3V1aWQiOiI3M2M5NzUzZi0xZWYwLTQxNTYtYTRhOS04NjY4OTZhNGY3OTkifQ.Nx0W3J0jfnqNg8JKdwQXhF-8LtOLj-VhAlG27xZOaOeh8ggfJB391JwS_d2jXtCRjmAJArlg9J-lBC_aZ5perQ;
+  try {
+    const API_KEY = process.env.CALENDLY_API_KEY;
 
-  const EVENT_TYPE = "https://api.calendly.com/event_types/921fd6d9-4105-4c13-9720-af2a1ae7e6dd";
+    if (!API_KEY) {
+      return res.status(500).json({ error: "Missing API key" });
+    }
 
-  const start = new Date().toISOString();
-  const end = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+    const EVENT_TYPE =
+      "https://api.calendly.com/event_types/921fd6d9-4105-4c13-9720-af2a1ae7e6dd";
 
-  const url = `https://api.calendly.com/event_type_available_times?event_type=${EVENT_TYPE}&start_time=${start}&end_time=${end}`;
+    const USER =
+      "https://api.calendly.com/users/73c9753f-1ef0-4156-a4a9-866896a4f799";
 
-  const response = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNzcxODMwNTYzLCJqdGkiOiIwY2I5ZGZlZC1mM2Q4LTRjYzgtODZlZC0yODlkOTI0NzNmZjkiLCJ1c2VyX3V1aWQiOiI3M2M5NzUzZi0xZWYwLTQxNTYtYTRhOS04NjY4OTZhNGY3OTkifQ.Nx0W3J0jfnqNg8JKdwQXhF-8LtOLj-VhAlG27xZOaOeh8ggfJB391JwS_d2jXtCRjmAJArlg9J-lBC_aZ5perQ}`,
-      "Content-Type": "application/json",
-    },
-  });
+    const start = new Date().toISOString();
+    const end = new Date(Date.now() + 7 * 86400000).toISOString();
 
-  const data = await response.json();
-  res.status(200).json(data);
+    const url =
+      `https://api.calendly.com/event_type_available_times` +
+      `?event_type=${EVENT_TYPE}` +
+      `&user=${USER}` +
+      `&start_time=${start}` +
+      `&end_time=${end}`;
+
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${API_KEY}`,
+      },
+    });
+
+    const data = await response.json();
+    return res.status(200).json(data);
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: err.message });
+  }
 }

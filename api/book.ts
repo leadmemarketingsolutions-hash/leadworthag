@@ -8,6 +8,10 @@ export default async function handler(req, res) {
 
     const { name, email, time } = req.body;
 
+    if (!name || !email || !time) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
     const EVENT_TYPE =
       "https://api.calendly.com/event_types/921fd6d9-4105-4c13-9720-af2a1ae7e6dd";
 
@@ -28,10 +32,10 @@ export default async function handler(req, res) {
     );
 
     const data = await response.json();
-    return res.status(200).json(data);
+    res.status(200).json(data);
 
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message });
   }
 }

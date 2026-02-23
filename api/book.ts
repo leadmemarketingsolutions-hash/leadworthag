@@ -2,21 +2,10 @@ export default async function handler(req, res) {
   try {
     const API_KEY = process.env.CALENDLY_API_KEY;
 
-    if (!API_KEY) {
-      return res.status(500).json({ error: "Missing API key" });
-    }
-
     const { name, email, time } = req.body;
 
-    if (!name || !email || !time) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-
-    const EVENT_TYPE =
-      "https://api.calendly.com/event_types/921fd6d9-4105-4c13-9720-af2a1ae7e6dd";
-
     const response = await fetch(
-      "https://api.calendly.com/scheduled_events",
+      "https://api.calendly.com/scheduling_links",
       {
         method: "POST",
         headers: {
@@ -24,18 +13,18 @@ export default async function handler(req, res) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          event_type: EVENT_TYPE,
-          invitees: [{ email, name }],
-          start_time: time,
+          max_event_count: 1,
+          owner:
+            "https://api.calendly.com/event_types/921fd6d9-4105-4c13-9720-af2a1ae7e6dd",
+          owner_type: "EventType",
         }),
       }
     );
 
     const data = await response.json();
-    res.status(200).json(data);
 
+    res.status(200).json(data);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: err.message });
   }
 }

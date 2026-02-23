@@ -5,7 +5,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, content-type",
 };
 
-let state: any = {};
+let state = {};
 
 serve(async (req) => {
   if (req.method === "OPTIONS")
@@ -13,72 +13,82 @@ serve(async (req) => {
 
   try {
     const { messages } = await req.json();
-    const last = messages[messages.length - 1]?.content?.trim();
+    const last = messages[messages.length - 1].content.toLowerCase();
 
-    /* ---------- START BOOKING ---------- */
-    if (/book|schedule|appointment/i.test(last)) {
-      state = {};
-      return json("Great! What’s your full name?");
+    // STEP 1: Detect booking intent
+    if (
+      last.includes("book") ||
+      last.includes("schedule") ||
+      last.includes("appointment")
+    ) {
+      state = { step: "name" };
+      return reply("Awesome! What's your full name?");
     }
 
-    /* ---------- NAME ---------- */
-    if (!state.name) {
+    // STEP 2: Collect name
+    if (state.step === "name") {
       state.name = last;
-      return json("Thanks! What’s your email?");
+      state.step = "email";
+      return reply("Great. What's your email?");
     }
 
-    /* ---------- EMAIL ---------- */
-    if (!state.email) {
+    // STEP 3: Collect email
+    if (state.step === "email") {
       state.email = last;
+      state.step = "slot";
 
-      const result = await fetch("https://www.leadworthy.ca/api/book", {
+      const slots = await fetch("https://www.leadworthy.ca/api/availability")
+        .then(r => r.json());
+
+      const options = slots.collection
+        ?.slice(0, 5)
+        ?.map((s, i) =>
+          `${i + 1}. ${new Date(s.start_time).toLocaleString()}`
+        )
+        .join("\n");
+
+      state.slots = slots.collection;
+
+      return reply(
+        `Here are available times:\n${options}\nReply with a number.`
+      );
+    }
+
+    // STEP 4: Choose slot
+    if (state.step === "slot") {
+      const index = parseInt(last) - 1;
+      const slot = state.slots?.[index];
+
+      if (!slot) return reply("Please reply with a valid number.");
+
+      const booking = await fetch("https://www.leadworthy.ca/api/book", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: state.name,
           email: state.email,
+          time: slot.start_time,
         }),
       }).then(r => r.json());
 
       state = {};
 
-      if (!result.booking_url)
-        return json("Something went wrong creating your booking link.");
-
-      return json(
-        `Perfect! Book your demo here:\n${result.booking_url}`
+      return reply(
+        `You're almost booked!\nClick here to confirm:\n${booking.bookingUrl}`
       );
     }
 
-    /* ---------- NORMAL CHAT ---------- */
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    // STEP 5: Normal AI
+    return reply(
+      "Hi! Want me to book you a demo? Just say 'book a call'."
+    );
 
-    const ai = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are LeadWorthy AI receptionist. Keep replies short. If user wants booking, ask for name then email.",
-          },
-          ...messages,
-        ],
-      }),
-    }).then(r => r.json());
-
-    return json(ai.choices?.[0]?.message?.content || "How can I help?");
   } catch {
-    return json("Something went wrong.");
+    return reply("Something went wrong.");
   }
 });
 
-function json(msg: string) {
+function reply(msg) {
   return new Response(
     JSON.stringify({
       choices: [{ message: { content: msg } }],

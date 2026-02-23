@@ -37,7 +37,7 @@ const Hero = () => {
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 animate-fade-up" style={{ animationDelay: "0.3s" }}>
           <Button size="lg" className="btn-primary-gradient rounded-full px-8 text-base h-12" asChild>
-            <a href="#cta">Schedule a Demo</a>
+            <a href="/demo">Schedule a Demo</a>
           </Button>
           <Button size="lg" variant="outline" className="rounded-full px-8 text-base h-12 border-border hover:bg-secondary" asChild>
             <a href="#features">​See How It Works   </a>

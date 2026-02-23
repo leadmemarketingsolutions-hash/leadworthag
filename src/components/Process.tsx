@@ -33,7 +33,7 @@ const Process = () => {
 
         <div className="text-center mt-12">
           <Button size="lg" className="btn-primary-gradient rounded-full px-8 h-12" asChild>
-            <a href="#cta">Get Started with LeadWorthy</a>
+            <a href="/demo">Get Started with LeadWorthy</a>
           </Button>
         </div>
       </div>

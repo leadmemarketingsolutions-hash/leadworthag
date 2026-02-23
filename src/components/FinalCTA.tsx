@@ -14,8 +14,8 @@ const FinalCTA = () => {
           <Button size="lg" className="btn-primary-gradient rounded-full px-8 h-12 text-base" asChild>
             <a href="/demo">Schedule a Demo</a>
           </Button>
-          <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base border-border hover:bg-secondary">
-            Talk to Sales
+          <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base border-border hover:bg-secondary" asChild>
+            <a href="/talk-to-sales">Talk to Sales</a>
           </Button>
         </div>
       </div>

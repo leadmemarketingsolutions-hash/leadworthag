@@ -40,7 +40,7 @@ const Features = () => {
 
         <div className="text-center mt-12">
           <Button size="lg" className="btn-primary-gradient rounded-full px-8 h-12" asChild>
-            <a href="#cta">Launch Your LeadWorthy Assistant</a>
+            <a href="/demo">Launch Your LeadWorthy Assistant</a>
           </Button>
           <p className="text-sm text-muted-foreground mt-3">Ready in under a week.</p>
         </div>

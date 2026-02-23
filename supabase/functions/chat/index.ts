@@ -5,120 +5,90 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, content-type",
 };
 
+const sessions = new Map();
+
 serve(async (req) => {
   if (req.method === "OPTIONS")
     return new Response(null, { headers: corsHeaders });
 
   try {
     const { messages, sessionId } = await req.json();
+    const last = messages[messages.length - 1]?.content?.trim();
 
-    let state = await getState(sessionId);
-    const last = messages[messages.length - 1]?.content;
+    let state = sessions.get(sessionId);
 
     /* =============================
        STEP 1 — Detect booking intent
     ============================= */
-    if (!state && /book|schedule|appointment/i.test(last)) {
+    if (!state && /book|schedule|demo|appointment/i.test(last)) {
       state = { step: "name" };
-      await saveState(sessionId, state);
+      sessions.set(sessionId, state);
       return reply("Great! Let’s book your demo. What’s your full name?");
     }
 
+    /* =============================
+       STEP 2 — Name
+    ============================= */
     if (state?.step === "name") {
       state.name = last;
       state.step = "email";
-      await saveState(sessionId, state);
+      sessions.set(sessionId, state);
       return reply("Thanks! What’s your email?");
     }
 
+    /* =============================
+       STEP 3 — Email
+    ============================= */
     if (state?.step === "email") {
       state.email = last;
-      state.step = "slot";
+      state.step = "confirm";
+      sessions.set(sessionId, state);
 
-      const slots = await fetch("https://www.leadworthy.ca/api/availability")
-        .then(r => r.json());
-
-      state.slots = slots.collection?.slice(0, 5);
-      await saveState(sessionId, state);
-
-      const list = state.slots
-        .map((s, i) =>
-          `${i + 1}. ${new Date(s.start_time).toLocaleString()}`
-        )
-        .join("\n");
-
-      return reply(`Here are available times:\n${list}\nReply with the number.`);
+      return reply(
+        `Perfect. Generating your booking link...`
+      );
     }
 
-    if (state?.step === "slot") {
-      const slot = state.slots?.[parseInt(last) - 1];
-      if (!slot) return reply("Please reply with a valid number.");
-
-      const link = await fetch("https://www.leadworthy.ca/api/book", {
+    /* =============================
+       STEP 4 — Create booking link
+    ============================= */
+    if (state?.step === "confirm") {
+      const result = await fetch("https://www.leadworthy.ca/api/book", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: state.name,
           email: state.email,
-          time: slot.start_time,
         }),
       }).then(r => r.json());
 
-      await clearState(sessionId);
+      sessions.delete(sessionId);
+
+      if (!result?.booking_url) {
+        return reply(
+          "Sorry, something went wrong creating your booking. Please try again."
+        );
+      }
 
       return reply(
-        `You're almost booked! Click here to confirm:\n${link.booking_url}`
+        `You're almost booked! Click here to confirm your demo:\n${result.booking_url}`
       );
     }
 
     /* =============================
-       Normal Gemini Chat
+       NORMAL AI CHAT
     ============================= */
-    return aiReply(messages);
+    return reply("Hi! Ask anything or type 'Book a demo'.");
 
-  } catch (e) {
+  } catch (err) {
+    console.error(err);
     return reply("Something went wrong. Please try again.");
   }
 });
-
-/* =============================
-   Helper Functions
-============================= */
-
-async function aiReply(messages) {
-  const key = Deno.env.get("LOVABLE_API_KEY");
-
-  const ai = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "google/gemini-3-flash-preview",
-      messages,
-    }),
-  }).then(r => r.json());
-
-  return reply(ai.choices?.[0]?.message?.content || "How can I help?");
-}
 
 function reply(text) {
   return new Response(
     JSON.stringify({ choices: [{ message: { content: text } }] }),
     { headers: corsHeaders }
   );
-}
-
-/* ===== Fake DB (replace with Supabase later) ===== */
-const sessions = new Map();
-
-async function getState(id) {
-  return sessions.get(id);
-}
-async function saveState(id, data) {
-  sessions.set(id, data);
-}
-async function clearState(id) {
-  sessions.delete(id);
 }

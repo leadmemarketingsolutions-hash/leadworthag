@@ -46,7 +46,7 @@ const Header = () => {
 
         <div className="hidden md:block">
           <Button className="btn-primary-gradient rounded-full px-6" asChild>
-            <a href="#cta">Schedule a Demo</a>
+            <a href="/demo">Schedule a Demo</a>
           </Button>
         </div>
 
@@ -72,7 +72,7 @@ const Header = () => {
             </a>
           ))}
           <Button className="btn-primary-gradient rounded-full w-full" asChild>
-            <a href="#cta">Schedule a Demo</a>
+            <a href="/demo">Schedule a Demo</a>
           </Button>
         </div>
       )}

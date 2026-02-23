@@ -2,75 +2,47 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, content-type",
 };
+
+function streamText(text: string) {
+  return new Response(
+    `data: ${JSON.stringify({
+      choices: [{ delta: { content: text } }],
+    })}\n\ndata: [DONE]\n\n`,
+    {
+      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+    }
+  );
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
     const { messages } = await req.json();
-    const last = messages[messages.length - 1]?.content?.trim() || "";
+    const last = messages[messages.length - 1]?.content || "";
 
-    // 🧠 Detect if booking already started
-    const bookingStarted = messages.some(m =>
-      m.content.includes("[BOOKING_STARTED]")
-    );
-
-    // ---------------------------
-    // STEP 1 — Detect intent
-    // ---------------------------
-    if (!bookingStarted && /book|schedule|demo call|appointment/i.test(last)) {
-      return new Response(JSON.stringify({
-        message:
-          "[BOOKING_STARTED]\nGreat! I'd love to get you booked. What's your name?"
-      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
-
-    // ---------------------------
-    // STEP 2 — Get Name
-    // ---------------------------
-    if (bookingStarted && !messages.some(m => m.content.includes("[NAME]"))) {
-      return new Response(JSON.stringify({
-        message: `[NAME] Thanks ${last}! What's the best email to send confirmation to?`
-      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
-
-    // ---------------------------
-    // STEP 3 — Get Email
-    // ---------------------------
-    if (bookingStarted && messages.some(m => m.content.includes("[NAME]"))
-        && !messages.some(m => m.content.includes("[EMAIL]"))) {
-
-      return new Response(JSON.stringify({
-        message: `[EMAIL] Perfect. Let me check available times for you…`
-      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
-
-    // ---------------------------
-    // STEP 4 — Show Slots
-    // ---------------------------
-    if (bookingStarted && messages.some(m => m.content.includes("[EMAIL]"))
-        && !messages.some(m => m.content.includes("[SLOTS]"))) {
-
+    // ✅ BOOKING INTENT
+    if (/book|schedule|demo call|appointment/i.test(last)) {
       const availability = await fetch("https://www.leadworthy.ca/api/availability").then(r => r.json());
       const slots = availability.collection?.slice(0, 3) || [];
 
-      const formatted = slots.map((s, i) =>
-        `${i + 1}. ${new Date(s.start_time).toLocaleString()}`
-      ).join("\n");
+      if (!slots.length) {
+        return streamText("Sorry, I don't see any available times right now.");
+      }
 
-      return new Response(JSON.stringify({
-        message: `[SLOTS]\nHere are the next available times:\n${formatted}\nReply with 1, 2, or 3.`
-      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      const formatted = slots
+        .map((s, i) => `${i + 1}. ${new Date(s.start_time).toLocaleString()}`)
+        .join("\n");
+
+      return streamText(
+        `Awesome! Here are the next available demo times:\n${formatted}\n\nReply with 1, 2, or 3.`
+      );
     }
 
-    // ---------------------------
-    // STEP 5 — Book
-    // ---------------------------
-    if (bookingStarted && /^[1-3]$/.test(last)) {
-
+    // ✅ SLOT PICK
+    if (/^[1-3]$/.test(last.trim())) {
       const availability = await fetch("https://www.leadworthy.ca/api/availability").then(r => r.json());
       const slot = availability.collection?.[parseInt(last) - 1];
 
@@ -80,18 +52,16 @@ serve(async (req) => {
         body: JSON.stringify({
           name: "Website Lead",
           email: "lead@example.com",
-          time: slot.start_time
-        })
+          time: slot.start_time,
+        }),
       });
 
-      return new Response(JSON.stringify({
-        message: `You're booked! 🎉 You'll get a confirmation email shortly.`
-      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      return streamText(
+        `You're booked! 🎉 Check your email for confirmation.`
+      );
     }
 
-    // ---------------------------
-    // OTHERWISE — GEMINI DEMO
-    // ---------------------------
+    // ✅ OTHERWISE → GEMINI
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -112,9 +82,6 @@ serve(async (req) => {
     });
 
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), {
-      status: 500,
-      headers: corsHeaders,
-    });
+    return streamText("Sorry, something went wrong. Please try again.");
   }
 });

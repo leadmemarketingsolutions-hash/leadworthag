@@ -1,25 +1,27 @@
 export default async function handler(req, res) {
   try {
-    const { name, email } = req.body;
+    const { name, email, time } = req.body;
 
-    if (!name || !email) {
-      return res.status(400).json({ error: "Missing name or email" });
+    if (!name || !email || !time) {
+      return res.status(400).json({ error: "Missing required fields" });
     }
 
-    // Your actual booking link slug
+    // Your Calendly public booking link
     const CALENDLY_LINK =
-      "https://calendly.com/leadworthy/demo";
+      "https://calendly.com/leadmemarketingsolutions/30min";
 
-    const url =
-      `${CALENDLY_LINK}?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`;
+    const bookingUrl =
+      `${CALENDLY_LINK}` +
+      `?name=${encodeURIComponent(name)}` +
+      `&email=${encodeURIComponent(email)}` +
+      `&date=${encodeURIComponent(time)}`;
 
     return res.status(200).json({
       success: true,
-      booking_url: url,
+      bookingUrl,
     });
-
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 }

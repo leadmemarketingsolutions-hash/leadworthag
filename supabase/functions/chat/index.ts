@@ -3,109 +3,74 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-let bookingState: any = {};
-
 serve(async (req) => {
-  if (req.method === "OPTIONS")
-    return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
     const { messages } = await req.json();
-    const last = messages[messages.length - 1]?.content?.toLowerCase();
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    /* ===============================
-       STEP 1 — detect booking intent
-    =============================== */
-    if (
-      last?.includes("book") ||
-      last?.includes("schedule") ||
-      last?.includes("demo")
-    ) {
-      bookingState = {};
-      return reply("Great 👍 Let's book your demo. What's your full name?");
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-3-flash-preview",
+        messages: [
+          {
+            role: "system",
+            content: `You are LeadWorthy's AI receptionist demo bot. Your purpose is to show potential customers how an AI receptionist works for their business.
+
+When a user tells you their niche or industry, adopt the persona of a professional, friendly receptionist for that type of business. For example:
+- If they say "dental office", act as a dental office receptionist handling appointment inquiries, insurance questions, etc.
+- If they say "law firm", act as a law firm receptionist handling client intake, consultation scheduling, etc.
+- If they say "plumbing company", act as a plumbing company receptionist handling service calls, emergency dispatch, quotes, etc.
+
+Start by warmly greeting the user and asking what type of business they'd like to see the AI receptionist demo for. Once they tell you, switch into that role seamlessly.
+
+Keep responses concise (2-4 sentences max). Be professional, warm, and helpful. Show how natural and capable an AI receptionist can be. If users ask about LeadWorthy itself, briefly explain that LeadWorthy provides AI-powered receptionist solutions across phone, SMS, WhatsApp, and web chat, then offer to continue the demo.`,
+          },
+          ...messages,
+        ],
+        stream: true,
+      }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 429) {
+        return new Response(JSON.stringify({ error: "Rate limit exceeded. Please try again shortly." }), {
+          status: 429,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      if (response.status === 402) {
+        return new Response(JSON.stringify({ error: "Service temporarily unavailable." }), {
+          status: 402,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const t = await response.text();
+      console.error("AI gateway error:", response.status, t);
+      return new Response(JSON.stringify({ error: "AI service error" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    /* ===============================
-       STEP 2 — collect name
-    =============================== */
-    if (!bookingState.name) {
-      bookingState.name = last;
-      return reply("Thanks! What's your email?");
-    }
-
-    /* ===============================
-       STEP 3 — collect email
-    =============================== */
-    if (!bookingState.email) {
-      bookingState.email = last;
-
-      const slots = await fetch(
-        "https://www.leadworthy.ca/api/availability"
-      ).then((r) => r.json());
-
-      if (!slots?.collection?.length)
-        return reply("No available times right now 😞");
-
-      bookingState.slots = slots.collection.slice(0, 5);
-
-      const list = bookingState.slots
-        .map(
-          (s: any, i: number) =>
-            `${i + 1}. ${new Date(s.start_time).toLocaleString()}`
-        )
-        .join("\n");
-
-      return reply(`Here are available times:\n${list}\nReply with number.`);
-    }
-
-    /* ===============================
-       STEP 4 — choose slot
-    =============================== */
-    if (!bookingState.time) {
-      const index = parseInt(last) - 1;
-      const slot = bookingState.slots?.[index];
-
-      if (!slot) return reply("Please reply with a valid number.");
-
-      bookingState.time = slot.start_time;
-
-      const booked = await fetch("https://www.leadworthy.ca/api/book", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: bookingState.name,
-          email: bookingState.email,
-          time: bookingState.time,
-        }),
-      }).then((r) => r.json());
-
-      bookingState = {};
-
-      return reply(
-        `🎉 You're booked!\nCalendly will email you confirmation.\n\nIf you don’t see it, check spam 🙂`
-      );
-    }
-
-    /* ===============================
-       STEP 5 — normal AI chat
-    =============================== */
-
-    return reply(
-      "Hi 👋 Want to see how our AI receptionist works or book a demo?"
-    );
+    return new Response(response.body, {
+      headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
+    });
   } catch (e) {
-    return reply("Something went wrong. Try again.");
+    console.error("chat error:", e);
+    return new Response(JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });
-
-function reply(text: string) {
-  return new Response(
-    JSON.stringify({
-      choices: [{ message: { content: text } }],
-    }),
-    { headers: corsHeaders }
-  );
-}

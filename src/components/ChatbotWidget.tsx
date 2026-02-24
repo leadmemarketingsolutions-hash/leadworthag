@@ -96,44 +96,32 @@ const ChatbotWidget = () => {
   return (
     <>
 {/* Floating button */}
-<div className="fixed bottom-6 right-6 z-50">
-  <div className="relative">
+<div className="fixed bottom-6 right-6 z-50 flex items-center gap-2">
 
-    {!open && (
-      <span
-        className="
-          absolute
-          right-full
-          top-1/2
-          -translate-y-1/2
-          mr-3
-          animate-bounce
-          bg-primary
-          text-primary-foreground
-          text-xs
-          font-semibold
-          px-3
-          py-1.5
-          rounded-full
-          shadow-md
-          whitespace-nowrap
-        "
-      >
+  {/* Try Me Badge */}
+  {!open && (
+    <div className="relative flex items-center animate-pulse">
+      <span className="bg-primary text-primary-foreground text-xs font-semibold px-3 py-1.5 rounded-full shadow-md whitespace-nowrap">
         Try Me! 👋
       </span>
+
+      {/* Arrow */}
+      <span className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-primary rotate-45 shadow-md"></span>
+    </div>
+  )}
+
+  {/* Chat Button */}
+  <button
+    onClick={() => setOpen(!open)}
+    className="h-14 w-14 rounded-full btn-primary-gradient shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
+    aria-label="Open chat"
+  >
+    {open ? (
+      <X size={24} className="text-primary-foreground" />
+    ) : (
+      <MessageCircle size={24} className="text-primary-foreground" />
     )}
-
-    <button
-      onClick={() => setOpen(!open)}
-      className="h-14 w-14 rounded-full btn-primary-gradient shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
-      aria-label="Open chat"
-    >
-      {open
-        ? <X size={24} className="text-primary-foreground" />
-        : <MessageCircle size={24} className="text-primary-foreground" />}
-    </button>
-
-  </div>
+  </button>
 </div>
 
       {/* Chat panel */}

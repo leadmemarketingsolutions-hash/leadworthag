@@ -45,13 +45,13 @@ If the visitor shows ANY interest in LeadWorthy itself, STOP roleplay and send b
 Intent examples: price, cost, demo, trial, sign up, talk to sales, how does this work for my business, can you do this for me, CRM integration, GoHighLevel, real booking, contact you, more info.
 Response MUST be:
 "Great! You can schedule a live demo with our team here 👇
-[Schedule a Demo](https://calendly.com/leadmemarketingsolutions/30min)"
+[Schedule a Demo](https://www.leadworthy.ca/demo)"
 No extra text. No roleplay. No questions.
 
 STEP 4 — SOFT CLOSE
 If the demo ends naturally (user says thanks, cool, got it):
 "That's exactly how LeadWorthy handles calls. If you'd like to try it with your business, you can book a demo here 👇
-[Schedule a Demo](https://calendly.com/leadmemarketingsolutions/30min)"
+[Schedule a Demo](https://www.leadworthy.ca/demo)"
 
 TONE
 • Friendly receptionist
@@ -70,7 +70,7 @@ STRICT RULES
 
 IF USER ASKS FOR HUMAN
 "I'd be happy to connect you with our team. You can schedule a live demo here 👇
-[Schedule a Demo](https://calendly.com/leadmemarketingsolutions/30min)"`;
+[Schedule a Demo](https://www.leadworthy.ca/demo)"`;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });

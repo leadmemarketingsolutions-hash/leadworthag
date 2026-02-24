@@ -100,21 +100,25 @@ const ChatbotWidget = () => {
   <div className="relative">
 
     {!open && (
-      <span className="
-        absolute 
-        -bottom-2 
-        -left-16 
-        animate-bounce
-        bg-primary 
-        text-primary-foreground 
-        text-xs 
-        font-semibold 
-        px-3 
-        py-1.5 
-        rounded-full 
-        shadow-md
-        whitespace-nowrap
-      ">
+      <span
+        className="
+          absolute
+          right-full
+          top-1/2
+          -translate-y-1/2
+          mr-3
+          animate-bounce
+          bg-primary
+          text-primary-foreground
+          text-xs
+          font-semibold
+          px-3
+          py-1.5
+          rounded-full
+          shadow-md
+          whitespace-nowrap
+        "
+      >
         Try Me! 👋
       </span>
     )}
@@ -126,8 +130,7 @@ const ChatbotWidget = () => {
     >
       {open
         ? <X size={24} className="text-primary-foreground" />
-        : <MessageCircle size={24} className="text-primary-foreground" />
-      }
+        : <MessageCircle size={24} className="text-primary-foreground" />}
     </button>
 
   </div>

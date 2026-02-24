@@ -14,13 +14,21 @@ const Header = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // If NOT on homepage, go home first
+  // ✅ Scroll to top if already on homepage
+  const handleLogoClick = () => {
+    if (location.pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  // ✅ Go to section from any page
   const goToSection = (id: string) => {
     if (location.pathname !== "/") {
       window.location.href = `/#${id}`;
     } else {
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     }
+    setMobileOpen(false);
   };
 
   return (
@@ -33,8 +41,12 @@ const Header = () => {
     >
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
 
-        {/* ✅ Logo → ALWAYS HOME */}
-        <Link to="/" className="font-display text-xl font-bold text-foreground">
+        {/* ✅ Logo */}
+        <Link
+          to="/"
+          onClick={handleLogoClick}
+          className="font-display text-xl font-bold text-foreground"
+        >
           Lead<span className="text-primary">Worthy</span>
         </Link>
 

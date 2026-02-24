@@ -1,55 +1,70 @@
-<footer className="border-t border-gray-200 py-6 text-sm text-gray-500 bg-white">
-  <div className="max-w-[1200px] mx-auto px-6">
+import { Instagram } from "lucide-react";
 
-    {/* MOBILE */}
-    <div className="flex flex-col items-center text-center gap-4 md:hidden">
+const Footer = () => {
+  return (
+    <footer className="border-t mt-24 pb-32 md:pb-10">
+      {/* pb-32 = mobile safe space for chat widget */}
 
-      {/* Logo + Instagram */}
-      <div className="flex items-center gap-2 font-semibold text-gray-900">
-        Lead<span className="text-blue-600">Worthy</span>
+      <div className="container mx-auto px-6">
 
-        <a
-          href="https://instagram.com/leadworthy.ag"
-          target="_blank"
-          className="opacity-70 hover:opacity-100"
-        >
-          <img src="/instagram.svg" className="w-4 h-4"/>
-        </a>
+        {/* Desktop layout */}
+        <div className="hidden md:grid grid-cols-3 items-center text-sm text-muted-foreground">
+
+          {/* LEFT */}
+          <div className="flex items-center gap-3">
+            <a href="#" className="font-display text-lg font-bold text-foreground">
+              Lead<span className="text-primary">Worthy</span>
+            </a>
+
+            <a
+              href="https://instagram.com/leadworthy.ag"
+              target="_blank"
+              className="hover:text-foreground transition-colors"
+            >
+              <Instagram size={18} />
+            </a>
+          </div>
+
+          {/* CENTER */}
+          <div className="flex justify-center gap-6">
+            <a href="/privacy-policy" className="hover:text-foreground">
+              Privacy Policy
+            </a>
+            <a href="/terms-of-service" className="hover:text-foreground">
+              Terms of Service
+            </a>
+          </div>
+
+          {/* RIGHT */}
+          <div className="text-right">
+            © 2025 LeadWorthy Marketing. All rights reserved.
+          </div>
+        </div>
+
+        {/* Mobile layout */}
+        <div className="flex md:hidden flex-col items-center gap-3 text-sm text-muted-foreground text-center">
+
+          <div className="flex items-center gap-2">
+            <a href="#" className="font-display text-lg font-bold text-foreground">
+              Lead<span className="text-primary">Worthy</span>
+            </a>
+
+            <a href="https://instagram.com/leadworthy.ag" target="_blank">
+              <Instagram size={18} />
+            </a>
+          </div>
+
+          <div className="flex gap-4">
+            <a href="/privacy-policy">Privacy</a>
+            <a href="/terms-of-service">Terms</a>
+          </div>
+
+          <p>© 2025 LeadWorthy Marketing. All rights reserved.</p>
+        </div>
+
       </div>
+    </footer>
+  );
+};
 
-      {/* Links */}
-      <div className="flex gap-6">
-        <a href="/privacy">Privacy Policy</a>
-        <a href="/terms">Terms of Service</a>
-      </div>
-
-      {/* Copyright */}
-      <div className="text-xs text-gray-400">
-        © 2025 LeadWorthy Marketing. All rights reserved.
-      </div>
-
-    </div>
-
-    {/* DESKTOP */}
-    <div className="hidden md:flex items-center justify-between">
-
-      <div className="flex items-center gap-2 min-w-[220px]">
-        <span className="font-semibold text-gray-900">
-          Lead<span className="text-blue-600">Worthy</span>
-        </span>
-        <img src="/instagram.svg" className="w-4 h-4"/>
-      </div>
-
-      <div className="flex gap-8">
-        <a href="/privacy">Privacy Policy</a>
-        <a href="/terms">Terms of Service</a>
-      </div>
-
-      <div className="min-w-[320px] text-right">
-        © 2025 LeadWorthy Marketing. All rights reserved.
-      </div>
-
-    </div>
-
-  </div>
-</footer>
+export default Footer;

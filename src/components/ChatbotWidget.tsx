@@ -96,17 +96,20 @@ const ChatbotWidget = () => {
   return (
     <>
 {/* Floating button */}
-<div className="fixed bottom-6 right-6 z-50 flex items-center gap-2">
+<div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
 
   {/* Try Me Badge */}
   {!open && (
-    <div className="relative flex items-center animate-pulse">
-      <span className="bg-primary text-primary-foreground text-xs font-semibold px-3 py-1.5 rounded-full shadow-md whitespace-nowrap">
-        Try Me! 👋
-      </span>
+    <div className="relative animate-[pulse_2.5s_ease-in-out_infinite]">
 
-      {/* Arrow */}
-      <span className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-primary rotate-45 shadow-md"></span>
+      <div className="bg-primary text-primary-foreground text-xs font-semibold px-3 py-1.5 rounded-full shadow-md whitespace-nowrap">
+        Try Me! 👋
+      </div>
+
+      {/* Speech bubble tail */}
+      <div className="absolute right-[-5px] top-1/2 -translate-y-1/2 w-0 h-0
+                      border-y-[6px] border-y-transparent
+                      border-l-[8px] border-l-primary" />
     </div>
   )}
 
@@ -116,12 +119,9 @@ const ChatbotWidget = () => {
     className="h-14 w-14 rounded-full btn-primary-gradient shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
     aria-label="Open chat"
   >
-    {open ? (
-      <X size={24} className="text-primary-foreground" />
-    ) : (
-      <MessageCircle size={24} className="text-primary-foreground" />
-    )}
+    {open ? <X size={24} className="text-primary-foreground" /> : <MessageCircle size={24} className="text-primary-foreground" />}
   </button>
+
 </div>
 
       {/* Chat panel */}

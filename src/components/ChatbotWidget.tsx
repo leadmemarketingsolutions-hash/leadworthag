@@ -96,13 +96,20 @@ const ChatbotWidget = () => {
   return (
     <>
       {/* Floating button */}
-      <button
-        onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full btn-primary-gradient shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
-        aria-label="Open chat"
-      >
-        {open ? <X size={24} className="text-primary-foreground" /> : <MessageCircle size={24} className="text-primary-foreground" />}
-      </button>
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
+        {!open && (
+          <span className="animate-bounce bg-primary text-primary-foreground text-xs font-semibold px-3 py-1.5 rounded-full shadow-md">
+            Try Me! 👋
+          </span>
+        )}
+        <button
+          onClick={() => setOpen(!open)}
+          className="h-14 w-14 rounded-full btn-primary-gradient shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
+          aria-label="Open chat"
+        >
+          {open ? <X size={24} className="text-primary-foreground" /> : <MessageCircle size={24} className="text-primary-foreground" />}
+        </button>
+      </div>
 
       {/* Chat panel */}
       {open && (

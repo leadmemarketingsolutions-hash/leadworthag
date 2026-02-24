@@ -7,8 +7,8 @@ const Footer = () => {
         </a>
 
         <div className="flex items-center gap-6 text-sm text-muted-foreground">
-          <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
-          <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
+          <a href="/privacy-policy" className="hover:text-foreground transition-colors">Privacy Policy</a>
+          <a href="/terms-of-service" className="hover:text-foreground transition-colors">Terms of Service</a>
         </div>
 
         <p className="text-sm text-muted-foreground">© 2026 LeadWorthy Marketing. All rights reserved.</p>

@@ -1,48 +1,49 @@
-import { Instagram } from "lucide-react";
+import Image from "next/image"
+import Link from "next/link"
 
-const Footer = () => {
+export default function Footer() {
   return (
-    <footer className="border-t border-border py-10">
-      <div className="container mx-auto px-6">
+    <footer className="border-t border-gray-200 py-7 text-sm text-gray-500 bg-white">
+      <div className="max-w-[1200px] mx-auto px-6 flex items-center justify-between">
 
-        {/* 3 equal columns */}
-        <div className="grid grid-cols-3 items-center">
+        {/* LEFT — Logo + Instagram */}
+        <div className="flex items-center gap-2 min-w-[220px]">
+          <Link href="/" className="flex items-center gap-2 font-semibold text-gray-900">
+            <span>
+              Lead<span className="text-blue-600">Worthy</span>
+            </span>
+          </Link>
 
-          {/* LEFT */}
-          <div className="flex items-center gap-3 justify-self-start">
-            <a href="#" className="font-display text-lg font-bold text-foreground">
-              Lead<span className="text-primary">Worthy</span>
-            </a>
-
-            <a
-              href="https://instagram.com/leadworthy.ag"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <Instagram size={18} />
-            </a>
-          </div>
-
-          {/* TRUE CENTER (under your arrow) */}
-          <div className="flex justify-center gap-6 text-sm text-muted-foreground">
-            <a href="/privacy-policy" className="hover:text-foreground">
-              Privacy Policy
-            </a>
-            <a href="/terms-of-service" className="hover:text-foreground">
-              Terms of Service
-            </a>
-          </div>
-
-          {/* RIGHT */}
-          <p className="text-sm text-muted-foreground justify-self-end">
-            © 2025 LeadWorthy Marketing. All rights reserved.
-          </p>
-
+          <Link
+            href="https://instagram.com"
+            target="_blank"
+            className="opacity-70 hover:opacity-100 transition"
+          >
+            <Image
+              src="/instagram.svg"
+              alt="Instagram"
+              width={18}
+              height={18}
+            />
+          </Link>
         </div>
+
+        {/* CENTER — Links */}
+        <div className="flex gap-8 text-center">
+          <Link href="/privacy" className="hover:text-gray-900">
+            Privacy Policy
+          </Link>
+          <Link href="/terms" className="hover:text-gray-900">
+            Terms of Service
+          </Link>
+        </div>
+
+        {/* RIGHT — Copyright */}
+        <div className="text-right min-w-[320px]">
+          © 2025 LeadWorthy Marketing. All rights reserved.
+        </div>
+
       </div>
     </footer>
-  );
-};
-
-export default Footer;
+  )
+}

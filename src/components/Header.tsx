@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -13,10 +14,10 @@ const Header = () => {
   }, []);
 
   const navLinks = [
-    { label: "Features", href: "#features" },
-    { label: "How It Works", href: "#process" },
-    { label: "Results", href: "#results" },
-    { label: "FAQ", href: "#faq" },
+    { label: "Features", href: "/#features" },
+    { label: "How It Works", href: "/#process" },
+    { label: "Results", href: "/#results" },
+    { label: "FAQ", href: "/#faq" },
   ];
 
   return (
@@ -28,28 +29,32 @@ const Header = () => {
       }`}
     >
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
-        <a href="#" className="font-display text-xl font-bold text-foreground">
+        {/* LOGO → always goes to homepage */}
+        <Link href="/" className="font-display text-xl font-bold text-foreground">
           Lead<span className="text-primary">Worthy</span>
-        </a>
+        </Link>
 
+        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((l) => (
-            <a
+            <Link
               key={l.href}
               href={l.href}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               {l.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
+        {/* Desktop Button */}
         <div className="hidden md:block">
           <Button className="btn-primary-gradient rounded-full px-6" asChild>
-            <a href="/demo">Schedule a Demo</a>
+            <Link href="/demo">Schedule a Demo</Link>
           </Button>
         </div>
 
+        {/* Mobile Menu Button */}
         <button
           className="md:hidden text-foreground"
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -59,20 +64,21 @@ const Header = () => {
         </button>
       </div>
 
+      {/* Mobile Nav */}
       {mobileOpen && (
         <div className="md:hidden bg-background border-b border-border px-6 pb-4 space-y-3">
           {navLinks.map((l) => (
-            <a
+            <Link
               key={l.href}
               href={l.href}
               onClick={() => setMobileOpen(false)}
               className="block text-sm font-medium text-muted-foreground hover:text-foreground"
             >
               {l.label}
-            </a>
+            </Link>
           ))}
           <Button className="btn-primary-gradient rounded-full w-full" asChild>
-            <a href="/demo">Schedule a Demo</a>
+            <Link href="/demo">Schedule a Demo</Link>
           </Button>
         </div>
       )}

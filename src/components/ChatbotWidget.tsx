@@ -96,7 +96,7 @@ const ChatbotWidget = () => {
   return (
     <>
       {/* Floating button */}
-      <div className="fixed bottom-6 left-6 z-50 flex flex-col items-start gap-2">
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
         {!open && (
           <span className="animate-bounce bg-primary text-primary-foreground text-xs font-semibold px-3 py-1.5 rounded-full shadow-md">
             Try Me! 👋
@@ -113,7 +113,7 @@ const ChatbotWidget = () => {
 
       {/* Chat panel */}
       {open && (
-        <div className="fixed bottom-24 left-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-8rem)] rounded-2xl border border-border bg-background shadow-xl flex flex-col overflow-hidden animate-fade-up">
+        <div className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-8rem)] rounded-2xl border border-border bg-background shadow-xl flex flex-col overflow-hidden animate-fade-up">
           {/* Header */}
           <div className="px-4 py-3 border-b border-border bg-primary/5 flex items-center gap-3">
             <div className="h-9 w-9 rounded-full btn-primary-gradient flex items-center justify-center">

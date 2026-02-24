@@ -2,7 +2,7 @@ const Footer = () => {
   return (
     <footer className="border-t border-border py-10">
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-        <a href="/" className="font-display text-lg font-bold text-foreground">
+        <a href="#" className="font-display text-lg font-bold text-foreground">
           Lead<span className="text-primary">Worthy</span>
         </a>
 

@@ -28,7 +28,7 @@ const Header = () => {
       }`}
     >
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
-        <a href="/" className="font-display text-xl font-bold text-foreground">
+        <a href="#" className="font-display text-xl font-bold text-foreground">
           Lead<span className="text-primary">Worthy</span>
         </a>
 

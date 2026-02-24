@@ -9,7 +9,7 @@ const features = [
 { icon: AlertTriangle, title: "Flags emergency or high-priority calls" },
 { icon: Moon, title: "Captures after-hours leads" },
 { icon: Link, title: "Connects with your CRM or booking software" },
-{ icon: RefreshCw, title: "Automated follow-up via SMS, email, or call" },
+{ icon: RefreshCw, title: "Automated follow-up via SMS, email, or phone call" },
 { icon: Calendar, title: "Lead nurturing sequences that convert over time" }];
 
 

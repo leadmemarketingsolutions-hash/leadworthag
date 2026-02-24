@@ -40,7 +40,7 @@ const Hero = () => {
             <a href="/demo">Schedule a Demo</a>
           </Button>
           <Button size="lg" variant="outline" className="rounded-full px-8 text-base h-12 border-border hover:bg-secondary" asChild>
-            <a href="#features">Whats Included?   </a>
+            <a href="#features">What's Included?   </a>
           </Button>
         </div>
 

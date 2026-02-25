@@ -155,7 +155,7 @@ const ChatbotWidget = () => {
                   }`}
                 >
                   {m.role === "assistant" ? (
-                    <div className="prose prose-sm max-w-none [&>p]:m-0">
+                    <div className="prose prose-sm max-w-none [&>p]:m-0 [&>p:has(a)]:mb-3">
                       <ReactMarkdown
                         components={{
                           a: ({ href, children }) => (

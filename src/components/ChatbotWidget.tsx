@@ -156,7 +156,24 @@ const ChatbotWidget = () => {
                 >
                   {m.role === "assistant" ? (
                     <div className="prose prose-sm max-w-none [&>p]:m-0">
-                      <ReactMarkdown>{m.content}</ReactMarkdown>
+                      <ReactMarkdown
+                        components={{
+                          a: ({ href, children }) => (
+                            <a
+                              href={href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="no-underline block mt-2"
+                            >
+                              <span className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold shadow-md hover:opacity-90 transition-opacity">
+                                {children}
+                              </span>
+                            </a>
+                          ),
+                        }}
+                      >
+                        {m.content}
+                      </ReactMarkdown>
                     </div>
                   ) : (
                     m.content

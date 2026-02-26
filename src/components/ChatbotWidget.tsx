@@ -3,7 +3,7 @@ import { MessageCircle, X, Send } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import leadworthyLogo from "@/assets/leadworthy-logo.png";
 
-type Msg = { role: "user" | "assistant"; content: string };
+type Msg = {role: "user" | "assistant";content: string;};
 
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
 
@@ -34,7 +34,7 @@ const ChatbotWidget = () => {
       setMessages((prev) => {
         const last = prev[prev.length - 1];
         if (last?.role === "assistant") {
-          return prev.map((m, i) => (i === prev.length - 1 ? { ...m, content: assistantSoFar } : m));
+          return prev.map((m, i) => i === prev.length - 1 ? { ...m, content: assistantSoFar } : m);
         }
         return [...prev, { role: "assistant", content: assistantSoFar }];
       });
@@ -45,9 +45,9 @@ const ChatbotWidget = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`
         },
-        body: JSON.stringify({ messages: [...messages, userMsg] }),
+        body: JSON.stringify({ messages: [...messages, userMsg] })
       });
 
       if (!resp.ok || !resp.body) {
@@ -75,7 +75,7 @@ const ChatbotWidget = () => {
           if (!line.startsWith("data: ")) continue;
 
           const jsonStr = line.slice(6).trim();
-          if (jsonStr === "[DONE]") { streamDone = true; break; }
+          if (jsonStr === "[DONE]") {streamDone = true;break;}
 
           try {
             const parsed = JSON.parse(jsonStr);
@@ -96,12 +96,12 @@ const ChatbotWidget = () => {
 
   return (
     <>
-{/* Floating button */}
-<div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+      {/* Floating button */}
+      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
 
   {/* Try Me Badge */}
-  {!open && (
-    <div className="relative animate-[pulse_2.5s_ease-in-out_infinite]">
+  {!open &&
+        <div className="relative animate-[pulse_2.5s_ease-in-out_infinite]">
 
       <div className="bg-primary text-primary-foreground text-xs font-semibold px-3 py-1.5 rounded-full shadow-md whitespace-nowrap">
         Try Me! 👋
@@ -112,76 +112,76 @@ const ChatbotWidget = () => {
                       border-y-[6px] border-y-transparent
                       border-l-[8px] border-l-primary" />
     </div>
-  )}
+        }
 
   {/* Chat Button */}
   <button
-    onClick={() => setOpen(!open)}
-    className="h-14 w-14 rounded-full btn-primary-gradient shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
-    aria-label="Open chat"
-  >
+          onClick={() => setOpen(!open)}
+          className="h-14 w-14 rounded-full btn-primary-gradient shadow-lg flex items-center justify-center hover:scale-105 transition-transform"
+          aria-label="Open chat">
+
     {open ? <X size={24} className="text-primary-foreground" /> : <MessageCircle size={24} className="text-primary-foreground" />}
   </button>
 
-</div>
+      </div>
 
       {/* Chat panel */}
-      {open && (
-        <div className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-8rem)] rounded-2xl border border-border bg-background shadow-xl flex flex-col overflow-hidden animate-fade-up">
+      {open &&
+      <div className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-8rem)] rounded-2xl border border-border bg-background shadow-xl flex flex-col overflow-hidden animate-fade-up">
           {/* Header */}
           <div className="px-4 py-3 border-b border-border bg-primary/5 flex items-center gap-3">
             <img src={leadworthyLogo} alt="LeadWorthy" className="h-9 w-9 rounded-full object-contain" />
             <div>
-              <p className="text-sm font-semibold text-foreground">LeadWorthy AI Demo</p>
+              <p className="text-sm font-semibold text-foreground">LeadWorthy AI </p>
               <p className="text-xs text-muted-foreground">Try our AI receptionist</p>
             </div>
           </div>
 
           {/* Messages */}
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
-            {messages.length === 0 && (
-              <div className="text-center py-8">
+            {messages.length === 0 &&
+          <div className="text-center py-8">
                 <p className="text-sm text-muted-foreground">👋 Hi there! Tell me what type of business you run, and I'll show you how an AI receptionist handles your calls.</p>
               </div>
-            )}
-            {messages.map((m, i) => (
-              <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+          }
+            {messages.map((m, i) =>
+          <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
-                    m.role === "user"
-                      ? "btn-primary-gradient text-primary-foreground rounded-br-md"
-                      : "bg-muted text-foreground rounded-bl-md"
-                  }`}
-                >
-                  {m.role === "assistant" ? (
-                    <div className="prose prose-sm max-w-none [&>p]:m-0 [&>p+p]:mt-2.5 [&>p:has(a)]:mb-3">
+              className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
+              m.role === "user" ?
+              "btn-primary-gradient text-primary-foreground rounded-br-md" :
+              "bg-muted text-foreground rounded-bl-md"}`
+              }>
+
+                  {m.role === "assistant" ?
+              <div className="prose prose-sm max-w-none [&>p]:m-0 [&>p+p]:mt-2.5 [&>p:has(a)]:mb-3">
                       <ReactMarkdown
-                        components={{
-                          a: ({ href, children }) => (
-                            <a
-                              href={href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="no-underline block mt-2"
-                            >
+                  components={{
+                    a: ({ href, children }) =>
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="no-underline block mt-2">
+
                               <span className="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold shadow-md hover:opacity-90 transition-opacity">
                                 {children}
                               </span>
                             </a>
-                          ),
-                        }}
-                      >
+
+                  }}>
+
                         {m.content}
                       </ReactMarkdown>
-                    </div>
-                  ) : (
-                    m.content
-                  )}
+                    </div> :
+
+              m.content
+              }
                 </div>
               </div>
-            ))}
-            {isLoading && messages[messages.length - 1]?.role !== "assistant" && (
-              <div className="flex justify-start">
+          )}
+            {isLoading && messages[messages.length - 1]?.role !== "assistant" &&
+          <div className="flex justify-start">
                 <div className="bg-muted rounded-2xl rounded-bl-md px-4 py-2.5">
                   <div className="flex gap-1">
                     <span className="h-2 w-2 bg-muted-foreground/40 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
@@ -190,36 +190,36 @@ const ChatbotWidget = () => {
                   </div>
                 </div>
               </div>
-            )}
+          }
           </div>
 
           {/* Input */}
           <div className="p-3 border-t border-border">
             <form
-              onSubmit={(e) => { e.preventDefault(); send(); }}
-              className="flex items-center gap-2"
-            >
+            onSubmit={(e) => {e.preventDefault();send();}}
+            className="flex items-center gap-2">
+
               <input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Type your message..."
-                className="flex-1 h-10 rounded-full border border-input bg-background px-4 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-                disabled={isLoading}
-              />
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type your message..."
+              className="flex-1 h-10 rounded-full border border-input bg-background px-4 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              disabled={isLoading} />
+
               <button
-                type="submit"
-                disabled={isLoading || !input.trim()}
-                className="h-10 w-10 rounded-full btn-primary-gradient flex items-center justify-center disabled:opacity-50"
-                aria-label="Send message"
-              >
+              type="submit"
+              disabled={isLoading || !input.trim()}
+              className="h-10 w-10 rounded-full btn-primary-gradient flex items-center justify-center disabled:opacity-50"
+              aria-label="Send message">
+
                 <Send size={16} className="text-primary-foreground" />
               </button>
             </form>
           </div>
         </div>
-      )}
-    </>
-  );
+      }
+    </>);
+
 };
 
 export default ChatbotWidget;

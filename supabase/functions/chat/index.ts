@@ -66,6 +66,10 @@ STEP 4 — SALES RESPONSE (ONLY ONCE)
 "Happy to help! You can schedule a live demo with our team here 👇"
 [Schedule a Demo](https://www.leadworthy.ca/demo)
 
+If they have questions first or aren't ready to book a demo yet, offer the Talk to Sales option:
+"No problem! If you'd like to chat with our team first, you can reach out here 👇"
+[Talk to Sales](https://www.leadworthy.ca/talk-to-sales)
+
 Do not repeat more than once.
 Then continue normal conversation.
 
@@ -77,6 +81,9 @@ If demo naturally ends:
 "That's how LeadWorthy handles calls.
 If you'd like to try it for your business, book a demo here 👇"
 [Schedule a Demo](https://www.leadworthy.ca/demo)
+
+"Or if you have questions first:"
+[Talk to Sales](https://www.leadworthy.ca/talk-to-sales)
 
 --------------------------------------------------
 
@@ -105,7 +112,10 @@ No long sales talk.
 IF USER ASKS FOR HUMAN
 "I'd be happy to connect you with our team.
 You can schedule a live demo here 👇"
-[Schedule a Demo](https://www.leadworthy.ca/demo)`;
+[Schedule a Demo](https://www.leadworthy.ca/demo)
+
+"Or if you just have some questions:"
+[Talk to Sales](https://www.leadworthy.ca/talk-to-sales)`;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import leadworthyLogo from "@/assets/leadworthy-logo.png";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -129,9 +130,7 @@ const ChatbotWidget = () => {
         <div className="fixed bottom-24 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-8rem)] rounded-2xl border border-border bg-background shadow-xl flex flex-col overflow-hidden animate-fade-up">
           {/* Header */}
           <div className="px-4 py-3 border-b border-border bg-primary/5 flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full btn-primary-gradient flex items-center justify-center">
-              <MessageCircle size={18} className="text-primary-foreground" />
-            </div>
+            <img src={leadworthyLogo} alt="LeadWorthy" className="h-9 w-9 rounded-full object-contain" />
             <div>
               <p className="text-sm font-semibold text-foreground">LeadWorthy AI Demo</p>
               <p className="text-xs text-muted-foreground">Try our AI receptionist</p>

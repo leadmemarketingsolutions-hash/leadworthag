@@ -133,7 +133,7 @@ const ChatbotWidget = () => {
             <img src={leadworthyLogo} alt="LeadWorthy" className="h-9 w-9 rounded-full object-contain" />
             <div>
               <p className="text-sm font-semibold text-foreground">LeadWorthy AI </p>
-              <p className="text-xs text-muted-foreground">Try our AI receptionist</p>
+              <p className="text-xs text-muted-foreground">Try our AI Receptionist Demo </p>
             </div>
           </div>
 
